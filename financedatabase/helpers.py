@@ -42,7 +42,7 @@ class FinanceDatabase:
         use_local_location (string, default False)
             The possibility to select a local location (i.e. based on Windows path)
         """
-        the_path = str(file_path) + "/" if use_local_location else base_url
+        the_path = f"{str(file_path)}/" if use_local_location else base_url
         the_path += self.FILE_NAME
         self.data = pd.read_csv(the_path, compression="bz2", index_col=0)
 
@@ -156,12 +156,10 @@ def obtain_options(
             f"choose from {', '.join(selection_values)}"
         )
 
-    the_path = str(file_path) + "/" if use_local_location else base_url
+    the_path = f"{str(file_path)}/" if use_local_location else base_url
     the_path += f"/categories/{selection}_categories.gzip"
     categories_df = pd.read_csv(the_path, index_col=0, compression="gzip")
-    categories = {
+    return {
         index: categories_df.loc[index].dropna().to_numpy()
         for index in categories_df.index
     }
-
-    return categories
